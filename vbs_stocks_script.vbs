@@ -88,11 +88,25 @@ Sub VBA_Stocks():
             ' Print yearly change
             Range("J" & output_row).Value = yearly_change
             
+            ' Formatting yearly change.
+            ' Positive values will be filled green
+            If yearly_change > 0 Then
+            
+                Range("J" & output_row).Interior.ColorIndex = 4
+            
+            ' Negative values will be filled red
+            Else
+            
+                Range("J" & output_row).Interior.ColorIndex = 3
+            
+            End If
+            
             ' Calculate percent change
             percent_change = (yearly_change / Abs(opening_value)) * 100
             
             ' Print percent change
             Range("K" & output_row).Value = percent_change
+            
                  
             ' Increment output_row
             output_row = output_row + 1
