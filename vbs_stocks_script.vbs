@@ -6,7 +6,7 @@ Sub VBA_Stocks():
         ' Variable to store the last row
         Dim last_row As Long
         
-        ' Determining the last row -- WASN'T WORKING PROPERLY
+        ' Determining the last row
         last_row = ws.Cells(Rows.Count, 1).End(xlUp).Row
         
         ' Variable to store the current volume, which can either be added to or outputted per ticker
@@ -90,7 +90,7 @@ Sub VBA_Stocks():
                 ' Print yearly change
                 ws.Range("J" & output_row).Value = yearly_change
                 
-                ' Formatting yearly change.
+                ' Formatting yearly change
                 ' Positive values will be filled green
                 If yearly_change > 0 Then
                 
@@ -104,11 +104,16 @@ Sub VBA_Stocks():
                 End If
                 
                 ' Calculate percent change
-                percent_change = (yearly_change / Abs(opening_value)) * 100
+                percent_change = (yearly_change / Abs(opening_value))
                 
                 ' Print percent change
                 ws.Range("K" & output_row).Value = percent_change
                 
+                ' Formatting percent change to a percentage
+                ws.Range("K" & output_row).Style = "Percent"
+                
+                ' Formatting percentage to go to 2 decimal places
+                ws.Range("K" & output_row).NumberFormat = "0.00%"
                      
                 ' Increment output_row
                 output_row = output_row + 1
@@ -117,7 +122,7 @@ Sub VBA_Stocks():
                 volume = 0
             
             Else
-                ' Add to volume sum -- GETTING BUG HERE (fixed this bug with 'on error resume next' above)
+                ' Add to volume sum
                 volume = volume + ws.Cells(i, 7).Value
                 
                 ' Add to closing value
@@ -126,10 +131,6 @@ Sub VBA_Stocks():
             End If
         
         Next i
-        
-        ' Formating
-        ' positive / negative (from checker board example)
-        ' percentages (from wells_fargo example -- similar to how currency was formatted)
 
     Next ws
 
