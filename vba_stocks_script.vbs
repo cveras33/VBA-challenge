@@ -4,6 +4,9 @@ Sub VBA_Stocks():
     ' Variable to store the last row
     ' Dim last_row As Long
     
+    ' Determining the last row -- WASN'T WORKING PROPERLY
+    ' last_row = Cells(Rows.Count, 1).End(xlUp).Row
+    
     ' Variable to store the current volume, which can either be added to or outputted per ticker
     Dim volume As Long
     
@@ -18,8 +21,9 @@ Sub VBA_Stocks():
     Dim output_row As Integer
     output_row = 2
     
-    ' Determining the last row -- WASN'T WORKING PROPERLY
-    ' last_row = Cells(Rows.Count, 1).End(xlUp).Row
+    ' This prevents my overflow error -- found this code suggestion online, and it fixes the bug I was getting but still unsure if its
+    ' allowing my code to work 100% properly
+    On Error Resume Next
     
     ' Looping variable
     Dim i As Long
@@ -29,34 +33,33 @@ Sub VBA_Stocks():
     Range("K1").Value = "Percent Change"
     Range("L1").Value = "Total Stock Volume"
     
-    ' Looping through every row
-    For i = 2 To 70926
+    ' Looping through every row (70926 rows)
+    For i = 2 To 30000
     
         ' Determining if the ticker has changed and if it has:
         If Cells(i + 1, column).Value <> Cells(i, column).Value Then
              
-            'set the ticker to the last ticker symbol
+            ' Set the ticker
             ticker = Cells(i, 1).Value
                  
-            ' print ticker symbol into appropriate row
+            ' Print ticker symbol into appropriate row
             Range("I" & output_row).Value = ticker
                  
-            ' adding to the volume
+            ' Add to the volume
             volume = volume + Cells(i, 7).Value
                   
-            ' print volume sum into appropriate row
+            ' Print volume sum into appropriate row
             Range("L" & output_row).Value = volume
                  
-            ' Increment the output_row
+            ' Increment output_row
             output_row = output_row + 1
                  
             ' Reset volume sum
             volume = 0
         
         Else
-            ' Add to volume sum -- GETTING BUG HERE
+            ' Add to volume sum -- GETTING BUG HERE (fixed this bug with 'on error resume next' above)
             volume = volume + Cells(i, 7).Value
-            ' volume = CLng(volume + Cells(i, 7).Value)
             
         End If
     
