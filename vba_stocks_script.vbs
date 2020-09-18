@@ -6,13 +6,10 @@ Sub VBA_Stocks():
         ' Variable to store the last row
         Dim last_row As Long
         
-        ' Determining the last row
+        ' Getting the last row
         last_row = ws.Cells(Rows.Count, 1).End(xlUp).Row
-        
-        ' Variable to store the current volume, which can either be added to or outputted per ticker
-        Dim volume As Long
-        
-        ' Varaible to store the ticker symbol which will then be outputted
+                
+        ' Varaible to store the ticker symbol
         Dim ticker As String
         
         ' Variable to store yearly change
@@ -20,6 +17,9 @@ Sub VBA_Stocks():
         
         'Variable to store percent change
         Dim percent_change As Double
+               
+        ' Variable to store the volume sum
+        Dim volume As Long
         
         ' Variable to store opening value, and setting that value to 0
         Dim opening_value As Double
@@ -33,11 +33,11 @@ Sub VBA_Stocks():
         Dim column As Integer
         column = 1
         
-        ' Variable for location of outputs such as ticker, yearly change, % change & total stock vol.
+        ' Variable for starting location of outputs
         Dim output_row As Integer
         output_row = 2
         
-        ' Challenge Variables
+        ' CHALLENGE Variables
         ' Variable for Greatest % increase
         Dim percent_increase As Double
         percent_increase = 0
@@ -59,8 +59,7 @@ Sub VBA_Stocks():
         ' Variable for the ticker with greatest total volume
         Dim volume_ticker As String
         
-        ' This prevents my overflow error -- found this code suggestion online, and it fixes the bug I was getting but still unsure if its
-        ' allowing my code to work 100% properly
+        ' This prevents my overflow error -- found this code suggestion online, and it fixes overflow error
         On Error Resume Next
         
         ' Looping variable
@@ -72,14 +71,14 @@ Sub VBA_Stocks():
         ws.Range("K1").Value = "Percent Change"
         ws.Range("L1").Value = "Total Stock Volume"
         
-        ' Challenge Headers
+        ' Print CHALLENGE Headers
         ws.Range("O2").Value = "Greatest % Increase"
         ws.Range("O3").Value = "Greatest % Decrease"
         ws.Range("O4").Value = "Greatest Total Volume"
         ws.Range("P1").Value = "Ticker"
         ws.Range("Q1").Value = "Value"
         
-        ' Looping through every row (70926 rows)
+        ' Looping through every row
         For i = 2 To last_row
         
             ' Determining if the ticker has changed and if it has:
@@ -185,7 +184,7 @@ Sub VBA_Stocks():
         ws.Range("P4").Value = volume_ticker
         ws.Range("Q4").Value = greatest_total_volume
         
-       ' Print greatest total decrease
+       ' Print greatest percent decrease and its ticker
         ws.Range("Q3").Value = percent_decrease
         ws.Range("P3").Value = decrease_ticker
         
@@ -195,7 +194,7 @@ Sub VBA_Stocks():
         ' Formatting percentage to go to 2 decimal places
         ws.Range("Q3").NumberFormat = "0.00%"
         
-        ' Print greatest total increase and its ticker
+        ' Print greatest percent increase and its ticker
         ws.Range("Q2").Value = percent_increase
         ws.Range("P2").Value = increase_ticker
         
