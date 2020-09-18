@@ -42,14 +42,22 @@ Sub VBA_Stocks():
         Dim percent_increase As Double
         percent_increase = 0
         
+        ' Variable for the ticker with the greatest percent increase
+        Dim increase_ticker As String
+        
         ' Variable for Greatest % decrease
         Dim percent_decrease As Double
         percent_decrease = 0
         
+        ' Variable for the ticker with the greatest percent decrease
+        Dim decrease_ticker As String
+        
         ' Variable for Greatest Total Volume
         Dim greatest_total_volume As Long
         greatest_total_volume = 0
-    
+        
+        ' Variable for the ticker with greatest total volume
+        Dim volume_ticker As String
         
         ' This prevents my overflow error -- found this code suggestion online, and it fixes the bug I was getting but still unsure if its
         ' allowing my code to work 100% properly
@@ -130,9 +138,6 @@ Sub VBA_Stocks():
                 ' Formatting percentage to go to 2 decimal places
                 ws.Range("K" & output_row).NumberFormat = "0.00%"
                 
-                ' CHALLENGE
-                ' Determining greatest total volume
-                     
                 ' Resetting for the next ticker
                 ' Increment output_row
                 output_row = output_row + 1
@@ -152,6 +157,23 @@ Sub VBA_Stocks():
                 If volume > greatest_total_volume Then
                     
                     greatest_total_volume = volume
+                    volume_ticker = ws.Cells(i, 1).Value
+                
+                End If
+                
+                ' Determining the greatest percent increase
+                If percent_change > percent_increase Then
+                
+                    percent_increase = percent_change
+                    increase_ticker = ws.Cells(i, 1).Value
+                
+                End If
+                
+                'Determining the greatest percent decrease
+                If percent_change < percent_decrease Then
+                
+                    percent_decrease = percent_change
+                    decrease_ticker = ws.Cells(i, 1).Value
                 
                 End If
                 
@@ -159,14 +181,29 @@ Sub VBA_Stocks():
         
         Next i
         
-        ' Print greatest total volume
+        ' Print greatest total volume and its ticker
+        ws.Range("P4").Value = volume_ticker
         ws.Range("Q4").Value = greatest_total_volume
         
-        ' Print greatest total decrease
-        ' ws.Range("Q3").Value = percent_decrease
+       ' Print greatest total decrease
+        ws.Range("Q3").Value = percent_decrease
+        ws.Range("P3").Value = decrease_ticker
         
-        ' Print greatest total increase
-        ' ws.Range("Q2").Value = percent_increase
+        ' Formatting to a percentage
+        ws.Range("Q3").Style = "Percent"
+                
+        ' Formatting percentage to go to 2 decimal places
+        ws.Range("Q3").NumberFormat = "0.00%"
+        
+        ' Print greatest total increase and its ticker
+        ws.Range("Q2").Value = percent_increase
+        ws.Range("P2").Value = increase_ticker
+        
+        ' Formatting to a percentage
+        ws.Range("Q2").Style = "Percent"
+                
+        ' Formatting percentage to go to 2 decimal places
+        ws.Range("Q2").NumberFormat = "0.00%"
 
     Next ws
 
