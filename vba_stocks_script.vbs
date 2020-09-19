@@ -29,7 +29,7 @@ Sub VBA_Stocks():
         Dim closing_value As Double
         closing_value = 0
         
-        'Variable for specifying column of interest
+        'Variable for specifying column of interest 
         Dim column As Integer
         column = 1
         
