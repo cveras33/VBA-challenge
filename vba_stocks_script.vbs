@@ -14,12 +14,14 @@ Sub VBA_Stocks():
         
         ' Variable to store yearly change
         Dim yearly_change As Double
+        yearly_change = 0
         
         'Variable to store percent change
         Dim percent_change As Double
                
         ' Variable to store the volume sum
         Dim volume As Long
+        volume = 0
         
         ' Variable to store opening value, and setting that value to 0
         Dim opening_value As Double
@@ -29,7 +31,7 @@ Sub VBA_Stocks():
         Dim closing_value As Double
         closing_value = 0
         
-        'Variable for specifying column of interest 
+        'Variable for specifying column of interest
         Dim column As Integer
         column = 1
         
@@ -81,6 +83,13 @@ Sub VBA_Stocks():
         ' Looping through every row
         For i = 2 To last_row
         
+            ' Get opening value
+            If opening_value = 0 Then
+                
+                opening_value = ws.Cells(i, 3).Value
+                
+            End If
+        
             ' Determining if the ticker has changed and if it has:
             If ws.Cells(i + 1, column).Value <> ws.Cells(i, column).Value Then
                  
@@ -95,13 +104,6 @@ Sub VBA_Stocks():
                       
                 ' Print volume sum
                 ws.Range("L" & output_row).Value = volume
-                
-                ' Get opening price for the year of each ticker
-                If opening_value = 0 Then
-                
-                    opening_value = ws.Cells(i, 3).Value
-                
-                End If
                 
                 ' Get closing price
                 closing_value = ws.Cells(i, 6).Value
@@ -143,13 +145,12 @@ Sub VBA_Stocks():
                      
                 ' Reset volume sum
                 volume = 0
+                
+                opening_value = 0
             
             Else
                 ' Add to volume sum
                 volume = volume + ws.Cells(i, 7).Value
-                
-                ' Add to closing value
-                closing_value = closing_value + ws.Cells(i, 6).Value
                 
                 ' CHALLENGE
                 ' Determining the greatest total volume
@@ -180,6 +181,7 @@ Sub VBA_Stocks():
         
         Next i
         
+        
         ' Print greatest total volume and its ticker
         ws.Range("P4").Value = volume_ticker
         ws.Range("Q4").Value = greatest_total_volume
@@ -207,3 +209,4 @@ Sub VBA_Stocks():
     Next ws
 
 End Sub
+
