@@ -20,7 +20,7 @@ Sub VBA_Stocks():
         Dim percent_change As Double
                
         ' Variable to store the volume sum
-        Dim volume As Long
+        Dim volume As Double
         volume = 0
         
         ' Variable to store opening value, and setting that value to 0
@@ -55,14 +55,11 @@ Sub VBA_Stocks():
         Dim decrease_ticker As String
         
         ' Variable for Greatest Total Volume
-        Dim greatest_total_volume As Long
+        Dim greatest_total_volume As Double
         greatest_total_volume = 0
         
         ' Variable for the ticker with greatest total volume
         Dim volume_ticker As String
-        
-        ' This prevents my overflow error -- found this code suggestion online, and it fixes overflow error
-        On Error Resume Next
         
         ' Looping variable
         Dim i As Long
@@ -127,8 +124,14 @@ Sub VBA_Stocks():
                 
                 End If
                 
-                ' Calculate percent change
-                percent_change = (yearly_change / Abs(opening_value))
+                If opening_value <> 0 Then
+                    ' Calculate percent change
+                    percent_change = (yearly_change / Abs(opening_value))
+                Else
+                
+                    percent_change = 0
+                
+                End If
                 
                 ' Print percent change
                 ws.Range("K" & output_row).Value = percent_change
